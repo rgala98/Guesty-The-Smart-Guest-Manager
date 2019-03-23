@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".MainActivity">
+
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:id="@+id/gcheckin"
+    android:layout_margin="10dp"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/round_grid"
+    android:clickable="true">
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/guest_add"
+        android:id="@+id/checkin_img"
+        android:layout_centerInParent="true"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Guest Checkin"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="@color/gDark"
+        android:layout_below="@id/checkin_img"/>
+
+</RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:id="@+id/gcheckout"
+        android:layout_below="@id/gcheckin"
+        android:background="@drawable/round_grid"
+        android:layout_margin="10dp"
+        android:clickable="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/guest_checkout"
+            android:layout_centerInParent="true"
+            android:id="@+id/checkout_img"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guest Checkout"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textColor="@color/gDark"
+            android:layout_below="@id/checkout_img"/>
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/logout"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="15dp"
+        android:text="LOGOUT"
+        android:fontFamily="@font/avnxt_demi"
+        android:textSize="20sp"
+        android:background="@color/gLight"
+        android:textColor="#FFFFFF"
+        android:paddingHorizontal="10dp"/>
+
+
+
+</RelativeLayout>

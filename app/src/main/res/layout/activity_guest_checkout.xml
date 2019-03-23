@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GuestCheckoutActivity"
+    android:background="#FFFFFF">
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:src="@drawable/back"
+        android:layout_marginHorizontal="8dp"
+        android:id="@+id/back_checkout"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Guest Checkout"
+        android:id="@+id/guestcheckouttext"
+        android:textSize="27sp"
+        android:fontFamily="@font/avnxt_medium"
+        android:textColor="#000000"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/guestcheckouttext"
+        android:layout_margin="7dp"
+        android:id="@+id/view1"
+        android:background="#707070"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view1"
+        android:orientation="horizontal"
+        android:layout_marginVertical="5dp"
+        android:id="@+id/filter_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove Filters"
+            android:layout_marginHorizontal="10dp"
+            android:id="@+id/remove_filters"
+            android:textColor="@color/gDark"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Start Date"
+            android:id="@+id/start_date"
+            android:layout_marginHorizontal="10dp"
+            android:textColor="@color/gLight"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set End Date"
+            android:id="@+id/end_date"
+            android:layout_marginHorizontal="10dp"
+            android:textColor="@color/gLight"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apply Filters"
+            android:id="@+id/apply_filters"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/gDark"/>
+
+
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_below="@id/filter_layout"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!--<DatePicker-->
+        <!--android:id="@+id/datePicker1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:alpha="100"-->
+        <!--android:background="@android:color/white"-->
+        <!--android:datePickerMode="calendar"-->
+        <!--android:elevation="24dp"-->
+        <!--android:headerBackground="@color/gDark" />-->
+
+
+</RelativeLayout>
