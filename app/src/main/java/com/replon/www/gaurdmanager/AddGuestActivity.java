@@ -68,8 +68,8 @@ public class AddGuestActivity extends AppCompatActivity implements MultiSpinner.
     EditText et_name,et_phoneNumber,veh_num,put_otp;
     String purpose,phone;
     ImageView veh_img;
-    TextView veh_type;
-    private String mVerificationId;
+    TextView veh_type,verify_otp;
+    private String mVerificationId,mResendToken;
 
     private FirebaseAuth mAuth;
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
@@ -137,7 +137,9 @@ public class AddGuestActivity extends AppCompatActivity implements MultiSpinner.
         et_name=(EditText)findViewById(R.id.name);
         et_phoneNumber=(EditText)findViewById(R.id.phoneNumber);
         put_otp=(EditText) findViewById(R.id.put_otp);
+        verify_otp = findViewById(R.id.verify_otp);
         put_otp.setVisibility(View.GONE);
+        verify_otp.setVisibility(View.GONE);
         mAuth = FirebaseAuth.getInstance();
 
 
@@ -145,6 +147,10 @@ public class AddGuestActivity extends AppCompatActivity implements MultiSpinner.
                 @Override
                 public void onVerificationCompleted(PhoneAuthCredential credential) {
                     Toast.makeText(getApplicationContext(), "Verification Complete", Toast.LENGTH_SHORT).show();
+
+                    showMessage("Success!!","OTP verified!");
+                    btn_add_guest.setEnabled(true);
+
                 }
 
                 @Override
@@ -157,6 +163,9 @@ public class AddGuestActivity extends AppCompatActivity implements MultiSpinner.
                 public void onCodeSent(String verificationId,
                                        PhoneAuthProvider.ForceResendingToken token) {
                     Toast.makeText(getApplicationContext(), "Code Sent", Toast.LENGTH_SHORT).show();
+                    mVerificationId = verificationId;
+                    //mResendToken = token;
+                    btn_add_guest.setEnabled(false);
                 }
             };
 
@@ -194,8 +203,38 @@ public class AddGuestActivity extends AppCompatActivity implements MultiSpinner.
             public void onClick(View v) {
 
                 put_otp.setVisibility(View.VISIBLE);
+                verify_otp.setVisibility(View.VISIBLE);
 
                 PhoneAuthProvider.getInstance().verifyPhoneNumber("+91 "+et_phoneNumber.getText().toString(),120, TimeUnit.SECONDS,AddGuestActivity.this,mCallbacks);
+
+
+            }
+        });
+
+        verify_otp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(put_otp.getText().toString().equals("")){
+                    showMessage("Error!","Enter The OTP Provided");
+                }
+                else{
+
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, put_otp.getText().toString());
+                    mAuth.signInWithCredential(credential).addOnCompleteListener(AddGuestActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(AddGuestActivity.this, "Verification Success", Toast.LENGTH_SHORT).show();
+                                btn_add_guest.setEnabled(true);
+                            } else {
+                                if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                    Toast.makeText(AddGuestActivity.this, "Verification Failed, Invalid credentials", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    });
+
+                }
             }
         });
 
@@ -205,24 +244,29 @@ public class AddGuestActivity extends AppCompatActivity implements MultiSpinner.
             public void onClick(View v) {
 
                 phone = et_phoneNumber.getText().toString();
-                Character ch = phone.charAt(0);
+                Log.i(TAG,"ADD GUEST PRESSED");
 
-                if(et_name.getText().toString().isEmpty()||et_phoneNumber.getText().toString().isEmpty()){
+
+                if(et_name.getText().toString().isEmpty()){
 
                     showMessage("Error!","Please enter all details");
                 }
 
-                else if(phone.length()!=10 || (!ch.equals('9') && !ch.equals('8') && !ch.equals('7'))){
-
-
-                    showMessage("Error!","Please enter a correct Phone Number");
-
-                }
                 else if(multiSpinner.getSelectedIndices().isEmpty()){
 
-                    showMessage("Error!","Please enter flat No.");
+                    showMessage("Error!","Please Enter Flat Number(s)");
+                }
+                if(!phone.equals("")){
+                    Character ch = phone.charAt(0);
+
+                    if(phone.length()!=10 || (!ch.equals('9') && !ch.equals('8') && !ch.equals('7'))){
+
+
+                        showMessage("Error!","Please enter a correct Phone Number");}
+
                 }
                 else{
+                    Log.i(TAG,"DATA MALE CHE");
 
                     addData();
                 }
@@ -291,7 +335,6 @@ public class AddGuestActivity extends AppCompatActivity implements MultiSpinner.
     }
 
 
-
     private void addData() {
 
 
@@ -302,29 +345,6 @@ public class AddGuestActivity extends AppCompatActivity implements MultiSpinner.
         veh_num.setEnabled(false);
         spinner.setEnabled(false);
 
-
-//        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, put_otp.getText().toString());
-//        mAuth.signInWithCredential(credential)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            Toast.makeText(getApplicationContext(), "Verification Success", Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-//                                Toast.makeText(getApplicationContext(), "Verification Failed, Invalid credentials", Toast.LENGTH_SHORT).show();
-//                                Log.i(TAG,"Error is "+task.getException());
-//                            }
-//                        }
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//
-//                        Log.i(TAG,"Error is "+e.getMessage());
-//
-//                    }
-//                });
 
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -372,7 +392,14 @@ public class AddGuestActivity extends AppCompatActivity implements MultiSpinner.
                     Log.i(TAG, "Society id is " + soc_id_ref);
 
                     String name = et_name.getText().toString();
-                    Long phoneNumber = Long.parseLong(et_phoneNumber.getText().toString());
+                    phone = et_phoneNumber.getText().toString();
+                    Long phoneNumber;
+                    if(!phone.equals("")){
+                    phoneNumber = Long.parseLong(et_phoneNumber.getText().toString());}
+                    else {
+                        phoneNumber = Long.parseLong("0");
+                    }
+
 
 //                    String dateInString = new java.text.SimpleDateFormat("EEEE, dd/MM/yyyy/hh:mm:ss")
 //                            .format(cal.getTime())

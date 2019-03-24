@@ -131,6 +131,18 @@
                 android:inputType="number"
                 />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Verify OTP"
+                android:id="@+id/verify_otp"
+                android:textColor="@color/gDark"
+                android:fontFamily="@font/avnxt_medium"
+                android:textSize="16dp"
+                android:layout_toRightOf="@id/put_otp"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="20dp"/>
+
 
             <Button
                 android:layout_width="wrap_content"

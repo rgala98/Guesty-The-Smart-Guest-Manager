@@ -216,7 +216,9 @@ public class GuestCheckoutActivity extends AppCompatActivity {
 
     }
 
-    private void callAdapter(){adapter=new CheckoutAdapter(){
+    private void callAdapter(){
+
+        adapter=new CheckoutAdapter(){
         @Override
         public void onBindViewHolder(@NonNull final GuestViewHolder holder, int i) {
 
