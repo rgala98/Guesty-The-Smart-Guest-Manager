@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Guest Manager</string>
+    <string name="app_name">Guesty</string>
 
 
     <!--firebase strings, DO NOT CHANGE-->
