@@ -143,13 +143,14 @@ public class AddGuestActivity extends AppCompatActivity implements MultiSpinner.
         mAuth = FirebaseAuth.getInstance();
 
 
+
             mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                 @Override
                 public void onVerificationCompleted(PhoneAuthCredential credential) {
                     Toast.makeText(getApplicationContext(), "Verification Complete", Toast.LENGTH_SHORT).show();
 
                     showMessage("Success!!","OTP verified!");
-                    btn_add_guest.setEnabled(true);
+                    //btn_add_guest.setEnabled(true);
 
                 }
 
@@ -246,6 +247,16 @@ public class AddGuestActivity extends AppCompatActivity implements MultiSpinner.
                 phone = et_phoneNumber.getText().toString();
                 Log.i(TAG,"ADD GUEST PRESSED");
 
+                if(!phone.equals("")){
+                    Character ch = phone.charAt(0);
+
+                    if(phone.length()!=10 || (!ch.equals('9') && !ch.equals('8') && !ch.equals('7'))){
+
+
+                        showMessage("Error!","Please enter a correct Phone Number");}
+
+                }
+
 
                 if(et_name.getText().toString().isEmpty()){
 
@@ -256,20 +267,13 @@ public class AddGuestActivity extends AppCompatActivity implements MultiSpinner.
 
                     showMessage("Error!","Please Enter Flat Number(s)");
                 }
-                if(!phone.equals("")){
-                    Character ch = phone.charAt(0);
 
-                    if(phone.length()!=10 || (!ch.equals('9') && !ch.equals('8') && !ch.equals('7'))){
-
-
-                        showMessage("Error!","Please enter a correct Phone Number");}
-
-                }
                 else{
                     Log.i(TAG,"DATA MALE CHE");
 
                     addData();
                 }
+
 
             }
         });
@@ -371,6 +375,8 @@ public class AddGuestActivity extends AppCompatActivity implements MultiSpinner.
         DocumentReference docRef = db.collection(user).document(user_id);
         mProgressBar.setVisibility(View.VISIBLE);
 
+        Log.i(TAG,"DOCUMENT REFERENCE IS "+docRef.toString());
+
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@javax.annotation.Nullable DocumentSnapshot snapshot,
@@ -383,7 +389,11 @@ public class AddGuestActivity extends AppCompatActivity implements MultiSpinner.
                 String source = snapshot != null && snapshot.getMetadata().hasPendingWrites()
                         ? "Local" : "Server";
 
-                if (snapshot != null && snapshot.exists()) {
+                Log.i(TAG,"Source is "+source);
+
+
+                if (snapshot != null &&snapshot.exists()) {
+
                     Log.d(TAG, source + " data is here ->data: " + snapshot.getData());
 
 
@@ -399,6 +409,7 @@ public class AddGuestActivity extends AppCompatActivity implements MultiSpinner.
                     else {
                         phoneNumber = Long.parseLong("0");
                     }
+
 
 
 //                    String dateInString = new java.text.SimpleDateFormat("EEEE, dd/MM/yyyy/hh:mm:ss")

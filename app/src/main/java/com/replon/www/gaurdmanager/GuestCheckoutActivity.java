@@ -401,7 +401,7 @@ public class GuestCheckoutActivity extends AppCompatActivity {
 
                 if(snapshot!=null && snapshot.exists()){
                     Log.d(TAG, source + " data is here ->data: " + snapshot.getData());
-                   soc_id_ref = (DocumentReference) snapshot.get("society_id");
+
 
                     Log.i(TAG,"society id " + soc_id_ref);
 
